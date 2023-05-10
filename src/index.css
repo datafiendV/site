@@ -1,0 +1,120 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.test {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+  opacity: 90%;
+}
+iframe {
+  position: fixed;
+  top: -10vh;
+  left: -10vw;
+  width: 120vw;
+  height: 120vh;
+  z-index: -1;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+.navBar {
+  color: white;
+  position: absolute;
+  left: 4em;
+  z-index: 2;
+}
+
+.App {
+  max-width: 50vw;
+  position: absolute;
+  left: 45vw;
+  top: 10vw;
+  max-height: 33vh;
+  overflow: hidden;
+  border: 1px #1deb41 solid;
+  border-radius: 0.25em;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  height: 500px;
+}
+.App::-webkit-scrollbar {
+  display: none;
+}
+.terminal::-webkit-scrollbar {
+  display: none;
+}
+.App {
+  max-width: 40vw;
+  width: 32vw;
+  position: absolute;
+  left: 50vw;
+  top: 15vw;
+  max-height: 31vh;
+  overflow: hidden;
+  border: 1px #1deb41 solid;
+  border-radius: 0.25em;
+  background: #13122ed9;
+  min-width: 400px !important;
+}
+.terminal strong, .terminal input, .terminal span, .terminal div {
+  color: #1deb41 !important;
+  font-family: monospace !important;
+}
+.terminal {
+  padding: 1em;
+  padding-top: 0.5em;
+}
+strong.datafeind {
+  color: orange !important;
+}
+strong.client {
+  color: #00ff2d !important;
+}
+
+.footer {
+  bottom: 1em;
+  left: 4em;
+  position: absolute;
+  color: lime;
+}
+.terminal div .userResponse {
+  color: #e8e8ff !important;
+}
+
+@media (max-width: 800px)  {
+  .App {
+    width: 90vw;
+    left: 5vw;
+    top: 30vw;
+    max-height: 90vh;
+    max-width: 90vw;
+    min-width: 90vw !important;
+  }
+  .navBar {
+    left: 1em;
+    text-align: center;
+
+  }
+  .footer {
+    left: 0em !important;
+    text-align: center;
+    padding: 1em;
+
+  }
+  .footer h1{
+    font-size: 1em;
+    text-align: center;
+  }
+}
