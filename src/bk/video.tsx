@@ -19,6 +19,7 @@ function BackgroundVideo() {
         autoplay: 1,
         controls: 0,
         modestbranding: 1,
+        disablekb: 1,
         rel: 0,
         showinfo: 0,
         loop: 1,
