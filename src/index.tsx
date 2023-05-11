@@ -13,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <NavBar />
-    <BackgroundVideo />
+    <span style={{ pointerEvents: 'none' }}>
+      <BackgroundVideo />
+    </span>
     <App />
     <Footer />
   </React.StrictMode>
