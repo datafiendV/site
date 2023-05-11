@@ -20,7 +20,20 @@ export const useTerminal = () => {
     };
     window.addEventListener('resize', windowResizeEvent);
 
+    const keydownEvent = (event: any) => {
+      if (event.key === 'Enter') {
+        // Do something when Enter is pressed
+        console.log('Enter key pressed');
+        terminalRef?.scrollTo({
+          top: 999999999999,
+        }); 
+      }
+    };
+  
+    window.addEventListener('keydown', keydownEvent);
+
     return () => {
+      window.removeEventListener('keydown', windowResizeEvent);
       window.removeEventListener('resize', windowResizeEvent);
     };
   }, [terminalRef]);

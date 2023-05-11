@@ -7,40 +7,34 @@ interface Path {
 }
 
 export const paths = [{
-    'response' : 'Test0',
-    'question' : '0 (allan/abdul)',
+    'response' : 'How much data do you need? <Type Response, press Enter, then Click to Continue>',
+    'question' : 'Lots / Little',
     'parseAnswer' : (answer: String)  => { 
-        let condition = answer.toLowerCase() == 'allan';
-      console.error('FUCK', answer, condition)
+      let condition = answer.toLowerCase() === 'lots';
       if (condition) {
-
-        return 1; // go to step 1, or path[1]
+        return 1;
       } else {
-
-        return 2; // go to step 1, or path[1]
+        return 2;
       }
-
     }
 },{
-      'response' : 'Allan!',
+      'response' : 'Do you need realtime streaming data?',
       'question' : 'Hi (y/n)',
       'parseAnswer' : (answer: String)  => { 
         if (answer.toLowerCase() === 'y') {
-
           return 1; // go to step 1, or path[1]
         } else {
-
           return 2; // go to step 1, or path[1]
         }
 
       }
 },{
-    'response' : 'Test1',
-    'question' : '1 (y/n)',
+    'response' : 'Do you have a vision for your data objective?',
+    'question' : 'y / n',
     'parseAnswer' : (answer: String)  => { 
       if (answer.toLowerCase() === 'y') {
 
-        return 2; // go to step 1, or path[1]
+        return 4; // go to step 1, or path[1]
       } else {
 
         return 0; // go to step 1, or path[1]
@@ -48,8 +42,8 @@ export const paths = [{
 
     }
 },{
-    'response' : 'test2',
-    'question' : '2 (y/n)',
+    'response' : 'Data Objectives: The Market Purpose of Data',
+    'question' : 'read more / decline',
     'parseAnswer' : (answer: String)  => { 
       if (answer.toLowerCase() === 'y') {
 

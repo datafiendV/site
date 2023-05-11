@@ -76,7 +76,7 @@ export const Terminal = forwardRef(
           pushToHistory(
             generatePathBlock(pathIndex)
           );
-
+           
         }
       },
       [commands, input]
