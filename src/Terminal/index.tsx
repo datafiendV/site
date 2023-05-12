@@ -34,6 +34,7 @@ export const Terminal = forwardRef(
     });
 
     const focusInput = useCallback(() => {
+      console.log('ran focusInput')
       inputRef.current?.focus();
     }, []);
 
@@ -61,22 +62,42 @@ export const Terminal = forwardRef(
     const handleInputKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-          // useTerminal.pushtoHistory
-          pushToHistory(
-          <>
-            <div className="userResponse">{ input }</div>
-          </>
-          );
-          // handle path here
-          console.log('paths are ', paths, paths[0]);
-          console.log('pathIndex is ', pathIndex);
-          setIndexValue(paths[pathIndex].parseAnswer(input))
-          console.log('pathIndex is ', pathIndex)
-          setInputValue('');
-          pushToHistory(
-            generatePathBlock(pathIndex)
-          );
 
+          // then, parse the text input, and try to resolve a next reply
+          if ( "clear" == input.toLowerCase() ) {
+            resetTerminal();
+            setInputValue('');
+          } else {
+            // useTerminal.pushtoHistory
+            pushToHistory(
+              <>
+                <div className="userResponse">{ input }</div>
+              </>
+              );
+              // handle path here
+              // console.log('paths are ', paths, paths[0]);
+              // console.log('pathIndex is ', pathIndex);
+              try {
+                console.log('about to set index, index is ', pathIndex)
+                let newIndex = paths[pathIndex].parseAnswer(input)
+                console.log('newIndex will be', newIndex)
+                setIndexValue(newIndex)
+                console.log('pathIndex is ', pathIndex);
+                setInputValue('');
+                pushToHistory(
+                  generatePathBlock(newIndex)
+                );
+                setTimeout(() => {
+                  console.log('will try to run focusInput')
+                  focusInput();
+                }, 100)
+              } catch (err) {
+                console.error('Error parsing answer, no change to path')
+              }
+              
+          }
+          
+           
         }
       },
       [commands, input]
@@ -95,28 +116,29 @@ export const Terminal = forwardRef(
     }
 
     return (
-      
-    <div className="terminal" ref={ref} onClick={focusInput}>
-      <div className="terminal_bg"></div>
-      <div className="terminal__line">{ generatePathBlock(0) }</div>
-      {history.map((line, index) => (
-        <div className="terminal__line" key={`terminal-line-${index}-${line}`}>
-          {line}
+      <>
+        <div className="terminal_bg"></div>
+        <div className="terminal" ref={ref} onClick={focusInput}>
+          <div className="terminal__line">{ generatePathBlock(0) }</div>
+          {history.map((line, index) => (
+            <div className="terminal__line" key={`terminal-line-${index}-${line}`}>
+              {line}
+            </div>
+          ))}
+          <div className="terminal__prompt">
+            <div className="terminal__prompt__label">{promptLabel}</div>
+            <div className="terminal__prompt__input">
+              <input
+                type="text"
+                value={input}
+                onKeyDown={handleInputKeyDown}
+                onChange={handleInputChange}
+                // @ts-ignore
+                ref={inputRef}
+              />
+            </div>
+          </div>
         </div>
-      ))}
-      <div className="terminal__prompt">
-        <div className="terminal__prompt__label">{promptLabel}</div>
-        <div className="terminal__prompt__input">
-          <input
-            type="text"
-            value={input}
-            onKeyDown={handleInputKeyDown}
-            onChange={handleInputChange}
-            // @ts-ignore
-            ref={inputRef}
-          />
-        </div>
-      </div>
-    </div>
-  );
+      </>  
+    );
 });

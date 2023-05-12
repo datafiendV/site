@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {TerminalHistory, TerminalHistoryItem, TerminalPushToHistoryWithDelayProps} from "./types";
 
 
@@ -20,7 +20,20 @@ export const useTerminal = () => {
     };
     window.addEventListener('resize', windowResizeEvent);
 
+    const keydownEvent = (event: any) => {
+      if (event.key === 'Enter') {
+        // Do something when Enter is pressed
+        console.log('Enter key pressed');
+        terminalRef?.scrollTo({
+          top: 999999999999,
+        }); 
+      }
+    };
+  
+    window.addEventListener('keydown', keydownEvent);
+
     return () => {
+      window.removeEventListener('keydown', windowResizeEvent);
       window.removeEventListener('resize', windowResizeEvent);
     };
   }, [terminalRef]);
@@ -48,15 +61,12 @@ export const useTerminal = () => {
    * @param executeAfter The function to be executed after the text is printed
    */
   const pushToHistoryWithDelay = useCallback(
-    ({
-       delay = 0,
-       content,
-     }: TerminalPushToHistoryWithDelayProps) =>
+    (content: ReactElement) =>
       new Promise((resolve) => {
         setTimeout(() => {
           pushToHistory(content);
           return resolve(content);
-        }, delay);
+        }, 100);
       }),
     [pushToHistory]
   );
