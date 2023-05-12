@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {TerminalHistory, TerminalHistoryItem, TerminalPushToHistoryWithDelayProps} from "./types";
 
 
@@ -61,15 +61,12 @@ export const useTerminal = () => {
    * @param executeAfter The function to be executed after the text is printed
    */
   const pushToHistoryWithDelay = useCallback(
-    ({
-       delay = 0,
-       content,
-     }: TerminalPushToHistoryWithDelayProps) =>
+    (content: ReactElement) =>
       new Promise((resolve) => {
         setTimeout(() => {
           pushToHistory(content);
           return resolve(content);
-        }, delay);
+        }, 100);
       }),
     [pushToHistory]
   );

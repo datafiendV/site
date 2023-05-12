@@ -12,7 +12,7 @@
 
     bottom: 0 !important;
     position: relative;
-    max-height: 100%;
+    max-height: 71%;
 }
 
 .terminal__line {
@@ -23,6 +23,7 @@
 .terminal__prompt {
     display: flex;
     align-items: center;
+    margin-bottom: 1em !important;
 }
 
 .terminal__prompt__label {
@@ -59,4 +60,8 @@
     z-index: -1;
     left: 0;
     top: 0;
+}
+
+.pathBlock .pathBlock__response {
+    color: orange !important;
 }

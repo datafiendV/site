@@ -67,6 +67,7 @@ iframe {
   border-radius: 0.25em;
   background: #13122ed9;
   min-width: 400px !important;
+  /* padding-bottom: 1em; */
 }
 .terminal strong, .terminal input, .terminal span, .terminal div {
   color: #1deb41 !important;
