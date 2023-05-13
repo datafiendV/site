@@ -1,9 +1,10 @@
 import './terminal.css';
 import {ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState} from "react";
+import { render } from 'react-dom';
 import {TerminalProps} from "./types";
 import {useTerminal} from "./hooks";
 import { paths } from "./paths";
-
+import Typed from "react-typed";
 
 export const Terminal = forwardRef(
   (props: TerminalProps, ref: ForwardedRef<HTMLDivElement>) => {
@@ -64,36 +65,34 @@ export const Terminal = forwardRef(
         if (e.key === 'Enter') {
 
           // then, parse the text input, and try to resolve a next reply
+          console.log('input is', input)
           if ( "clear" == input.toLowerCase() ) {
             resetTerminal();
             setInputValue('');
           } else {
-            // useTerminal.pushtoHistory
             pushToHistory(
-              <>
-                <div className="userResponse">{ input }</div>
-              </>
-              );
-              // handle path here
-              // console.log('paths are ', paths, paths[0]);
-              // console.log('pathIndex is ', pathIndex);
-              try {
-                console.log('about to set index, index is ', pathIndex)
-                let newIndex = paths[pathIndex].parseAnswer(input)
-                console.log('newIndex will be', newIndex)
-                setIndexValue(newIndex)
-                console.log('pathIndex is ', pathIndex);
-                setInputValue('');
-                pushToHistory(
-                  generatePathBlock(newIndex)
-                );
-                setTimeout(() => {
-                  console.log('will try to run focusInput')
-                  focusInput();
-                }, 100)
-              } catch (err) {
-                console.error('Error parsing answer, no change to path')
-              }
+              [ { script: input as string, className: "userResponse" } ], focusInput
+            );
+            
+            console.log('paths are ', paths, paths[0]);
+            console.log('pathIndex is ', pathIndex);
+            try {
+              console.log('about to set index, index is ', pathIndex)
+              let newIndex = paths[pathIndex].parseAnswer(input)
+              setInputValue('');
+              console.log('newIndex will be', newIndex)
+              setIndexValue(newIndex)
+              console.log('pathIndex is ', pathIndex);
+              let newPrompt = generatePathBlock(newIndex);
+              console.log('new is ', newPrompt)
+              pushToHistory(newPrompt, focusInput);
+              setTimeout(() => {
+                console.log('will try to run focusInput')
+                focusInput();
+              }, 100)
+            } catch (err) {
+              console.error('Error parsing answer, no change to path')
+            }
               
           }
           
@@ -104,22 +103,24 @@ export const Terminal = forwardRef(
     );
 
     const generatePathBlock = (pathIndex: any) => {
-      return (
-        <>
-          <div className="pathBlock">
-            <div className="pathBlock__response">{ paths[pathIndex].response }</div>
-            <div className="pathBlock__question">{ paths[pathIndex].question }</div>
-          </div>
-        </>
-      )
-
+      return [{
+        script: `${paths[pathIndex].response}`,
+        className : "pathblock_response"
+      },{
+        script : `${ paths[pathIndex].question}`,
+        className : "pathblock_question"
+      }]
     }
 
     return (
       <>
         <div className="terminal_bg"></div>
         <div className="terminal" ref={ref} onClick={focusInput}>
-          <div className="terminal__line">{ generatePathBlock(0) }</div>
+          <div className="terminal__line">  
+            <div className="pathBlock">
+              <Typed typeSpeed={ 40 } className="pathBlock__response" strings={ [ paths[pathIndex].response , paths[pathIndex].question ] } ></Typed>
+            </div>
+          </div>
           {history.map((line, index) => (
             <div className="terminal__line" key={`terminal-line-${index}-${line}`}>
               {line}

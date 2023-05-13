@@ -119,3 +119,7 @@ strong.client {
     text-align: center;
   }
 }
+
+span.typed-cursor.typed-cursor--blink {
+  display: none;
+}

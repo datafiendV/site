@@ -1,6 +1,6 @@
-import {ReactElement, useCallback, useEffect, useState} from 'react';
+import {ReactElement, ReactNode, useCallback, useEffect, useState} from 'react';
 import {TerminalHistory, TerminalHistoryItem, TerminalPushToHistoryWithDelayProps} from "./types";
-
+import Typed from "react-typed";
 
 export const useTerminal = () => {
   const [terminalRef, setDomNode] = useState<HTMLDivElement>();
@@ -48,10 +48,62 @@ export const useTerminal = () => {
     });
   }, [history, terminalRef]);
 
-  const pushToHistory = useCallback((item: TerminalHistoryItem) => {
-    console.log('pushToHistory', item)
-    setHistory((old) => [...old, item]);
+  function countLetters(str: string): number {
+    const letterRegex: RegExp = /[a-zA-Z]/g;
+    const letters: string[] | null = str.match(letterRegex);
+  
+    return letters ? letters.length : 0;
+  }
+
+  // TODO - fix doubling up sequential path items as calls to pushtoHistory
+
+  const pushToHistory = useCallback((items: { script: string; className: string; }[], focusInput: any) => {
+    console.log('pushToHistory', items, typeof(items) )
+    items = items as [any];
+    console.log('items', items.length)
+
+    if ( items[0].className == "userResponse" ) {
+      let reply = (<>
+          <div className="userResponse">{ items[0].script }</div>
+        </>)
+      setHistory((old) => [ ...old, reply]);
+    } else {
+      for (var x = 0; x < items.length; x++ ) {
+        let item = items[x] as { script: string, className: string};
+        let delay = delayCalculator(items, x);
+        setTimeout( function () {
+          console.log('next ' + x)
+          console.log('delay is ', delay)
+          console.log(item.script, item.className)
+          let props = { 
+            script : item.script,
+            className : item.className
+          };
+          let typed = (<>
+            <Typed typeSpeed={ 40 } strings={ [item.script ] } className={ item.className } />
+          </>)
+          setHistory((old) => [...old, typed]);
+          focusInput();
+        }, delay);
+  
+  
+      } 
+
+    }
+
+  
   }, []);
+
+  const delayCalculator = (items : any[], round : number) => {
+    let letterDelay = 80 as number;
+    let delay = 0
+    for ( let y = 0; y < round; y++ ) {
+      let offset = countLetters(items[y].script) * letterDelay;
+      console.log('offset for ', round, ' is ', offset)
+      delay = delay + offset;
+    }
+    return delay;
+  }
 
   /**
    * Write text to terminal
@@ -63,10 +115,11 @@ export const useTerminal = () => {
   const pushToHistoryWithDelay = useCallback(
     (content: ReactElement) =>
       new Promise((resolve) => {
-        setTimeout(() => {
-          pushToHistory(content);
-          return resolve(content);
-        }, 100);
+        // setTimeout(() => {
+        //   pushToHistory(content);
+        //   return resolve(content);
+        // }, 100);
+        resolve(true)
       }),
     [pushToHistory]
   );
