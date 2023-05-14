@@ -36,19 +36,7 @@ iframe {
   z-index: 2;
 }
 
-.App {
-  max-width: 50vw;
-  position: absolute;
-  left: 45vw;
-  top: 10vw;
-  max-height: 33vh;
-  overflow: hidden;
-  border: 1px #1deb41 solid;
-  border-radius: 0.25em;
-  scroll-behavior: smooth;
-  overflow-y: scroll;
-  height: 500px;
-}
+
 .App::-webkit-scrollbar {
   display: none;
 }
@@ -56,18 +44,18 @@ iframe {
   display: none;
 }
 .App {
-  max-width: 40vw;
-  width: 32vw;
+  max-width: 50vw;
+  width: 45vw;
   position: absolute;
-  left: 50vw;
+  left: 45vw;
   top: 15vw;
-  max-height: 31vh;
+  max-height: 35vh;
   overflow: hidden;
   border: 1px #1deb41 solid;
   border-radius: 0.25em;
   background: #13122ed9;
   min-width: 400px !important;
-  /* padding-bottom: 1em; */
+  padding-bottom: 1em;
 }
 .terminal strong, .terminal input, .terminal span, .terminal div {
   color: #1deb41 !important;

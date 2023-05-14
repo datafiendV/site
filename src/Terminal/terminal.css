@@ -62,6 +62,6 @@
     top: 0;
 }
 
-.pathBlock .pathBlock__response {
+span.pathblock_response, span.pathblock_response span {
     color: orange !important;
 }

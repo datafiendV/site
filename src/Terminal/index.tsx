@@ -21,6 +21,7 @@ export const Terminal = forwardRef(
       commands = {},
     } = props;
 
+    const terminalRef = useRef(null);
     const inputRef = useRef<HTMLInputElement>();
     const [input, setInputValue] = useState<string>('');
     const [pathIndex, setIndexValue] = useState<number>(0);
@@ -31,7 +32,6 @@ export const Terminal = forwardRef(
     useEffect(() => {
 
       inputRef.current?.focus();
-
     });
 
     const focusInput = useCallback(() => {
@@ -115,7 +115,7 @@ export const Terminal = forwardRef(
     return (
       <>
         <div className="terminal_bg"></div>
-        <div className="terminal" ref={ref} onClick={focusInput}>
+        <div className="terminal" ref={terminalRef} onClick={focusInput}>
           <div className="terminal__line">  
             <div className="pathBlock">
               <Typed typeSpeed={ 40 } className="pathBlock__response" strings={ [ paths[pathIndex].response , paths[pathIndex].question ] } ></Typed>
