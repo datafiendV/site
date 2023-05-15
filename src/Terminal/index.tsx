@@ -11,6 +11,8 @@ export const Terminal = forwardRef(
     const {
       history,
       pushToHistory,
+      responses,
+      setResponses,
       setTerminalRef,
       resetTerminal,
     } = useTerminal();
@@ -36,6 +38,8 @@ export const Terminal = forwardRef(
 
     const focusInput = useCallback(() => {
       console.log('ran focusInput')
+      console.log('responses are ', responses)
+      setResponses( ( prev_responses ) => [...prev_responses, 'test']  )
       inputRef.current?.focus();
     }, []);
 

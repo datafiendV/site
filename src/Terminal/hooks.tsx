@@ -1,12 +1,12 @@
 import {ReactElement, ReactNode, useCallback, useEffect, useState} from 'react';
-import {TerminalHistory, TerminalHistoryItem, TerminalPushToHistoryWithDelayProps} from "./types";
+import {TerminalHistory, ResponseHistory, TerminalHistoryItem, TerminalPushToHistoryWithDelayProps} from "./types";
 import Typed from "react-typed";
 
 export const useTerminal = () => {
   const [terminalRef, setDomNode] = useState<HTMLDivElement>();
   const setTerminalRef = useCallback((node: HTMLDivElement) => setDomNode(node), []);
-
-  const [history, setHistory] = useState<TerminalHistory>([]);
+  const [ responses, setResponses ] = useState([]);
+  const [ history, setHistory ] = useState<TerminalHistory>([]);
 
   /**
    * Scroll to the bottom of the terminal when window is resized
@@ -59,12 +59,16 @@ export const useTerminal = () => {
 
   const pushToHistory = useCallback((items: { script: string; className: string; }[], focusInput: any) => {
     console.log('pushToHistory', items, typeof(items) )
+    console.error('responses is ', responses)
     items = items as [any];
     console.log('items', items.length)
 
     if ( items[0].className == "userResponse" ) {
+      let response = items[0].script as string;
+      console.log('adding response ', response, 'to ', responses)
+          setResponses( ( prev_responses ) => [...prev_responses, response] );
       let reply = (<>
-          <div className="userResponse">{ items[0].script }</div>
+          <div className="userResponse">{ response }</div>
         </>)
       setHistory((old) => [ ...old, reply]);
     } else {
@@ -136,7 +140,8 @@ export const useTerminal = () => {
     history,
     pushToHistory,
     pushToHistoryWithDelay,
-
+    responses, 
+    setResponses, 
     terminalRef,
     setTerminalRef,
 
